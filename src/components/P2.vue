@@ -1,43 +1,82 @@
 <template>
    <div class="wrapper">
-      <div class="scene">
-         <div class="leftTopText">
-            <div class="blueBlock"></div>
-            <h5>A day <br />ON THE ISLAND</h5>
-            <H1>AEGEAN SEA<br/>NIGHT SKY</H1>
-            <p>動態互動<br />網頁特效入門</p>
-         </div>
+      <label for="switch">
+         <div class="remind">Click to Switch Day/Night</div>
+         <input type="checkbox" id='switch'>
+         <div class="scene">
+            <div class="allstars">
+               <div class="star1"></div>
+               <div class="star2"></div>
+               <div class="star3"></div>
+               <div class="star4"></div>
+               <div class="star5"></div>
+               <div class="star6"></div>
+               <div class="star7"></div>
+               <div class="star8"></div>
+               <div class="star9"></div>
+               <div class="star10"></div>
+               <div class="star11"></div>
+               <div class="star12"></div>
+               <div class="star13"></div>
+               <div class="star14"></div>
+               <div class="star15"></div>
+               <div class="star16"></div>
+               <div class="star17"></div>
+               <div class="star18"></div>
+               <div class="star19"></div>
+               <div class="star20"></div>
+               <div class="star21"></div>
+               <div class="star22"></div>
+               <div class="star23"></div>
+               <div class="star24"></div>
+               <div class="star25"></div>
+               <div class="star26"></div>
+               <div class="star27"></div>
+               <div class="star28"></div>
+               <div class="star29"></div>
+               <div class="star30"></div>
+            </div>
+            <div class="leftTopText">
+               <div class="blueBlock"></div>
+               <h5>A day <br />ON THE ISLAND</h5>
+               <h1>AEGEAN SEA<br/>NIGHT SKY</h1>
+               <p>動態互動<br />網頁特效入門</p>
+            </div>
 
-         <div class="building">
-            <div class="house1">
-               <div class="window">
-                  <div class="circle"></div>
-                  <div class="circle"></div>
-                  <div class="circle"></div>
-               </div>
-            </div>
-            <div class="house2">
-               <div class="door"></div>
-            </div>
-            <div class="house3">
-               <div class="wall">
-                  <div class="window"></div>
-               </div>
-               <div class="wall">
-                  <div class="window"></div>
-               </div>
-               <div class="wall">
-                  <div class="window"></div>
-               </div>
-               <div class="roof">
-                  <div class="roofTop">
-                     <div class="cross"></div>
+            <div class="building">
+               <div class="house1">
+                  <div class="window">
+                     <div class="circle"></div>
+                     <div class="circle"></div>
+                     <div class="circle"></div>
                   </div>
                </div>
-            </div>
+               <div class="house2">
+                  <div class="door"></div>
+               </div>
+               <div class="house3">
+                  <div class="wall">
+                     <div class="window"></div>
+                  </div>
+                  <div class="wall">
+                     <div class="window"></div>
+                  </div>
+                  <div class="wall">
+                     <div class="window"></div>
+                  </div>
+                  <div class="roof">
+                     <div class="roofTop">
+                        <div class="cross"></div>
+                     </div>
+                  </div>
+               </div>
 
+            </div>
          </div>
-      </div>
+
+
+      </label>
+      
    </div>
 </template>
 
@@ -52,7 +91,7 @@ export default {
    *, *::before, *::after{ //筆記：如果此專案使用大量的before, after，那就在這裡設
       font-family: 'Playfair Display', '微軟正黑體';
       position: relative;  //筆記：因為這個專案太多要定位了，所以設全部都relative，讓每個absolute定位都會尋找上一層來做相對定位
-      border: 1px solid black;
+      // border: 1px solid black;
    }
    
    //指定顏色變數
@@ -106,13 +145,50 @@ export default {
    input:checked +.block{
       transform: translate(300px);
    }
+   .allstars{
+      @include abpos(0, 0);
+      @include size(100%);
 
+      [class^='star']{
+         @include size(3px, 3px, 50%);
+         background-color: white;
+         animation: falling 2s infinite;
+      }
+
+      @keyframes falling {
+         0%, 100%{
+            opacity: 0;
+         }
+         70%{
+            opacity: 1;
+         }
+         0%{
+            transform: translate(100px, 0);
+         }
+         100%{
+            transform: translate(0, 100px);
+         }
+
+      }
+      @for $i from 1 through 30{
+         $posX : random(100)*1%;
+         $posY : random()*50%;
+         .star#{$i}{
+            left: $posX;
+            top:$posY;
+            animation-delay: $i*-0.1s
+         }
+
+      }
+   }
    .scene{
       @include size(700px, 500px, 15px);
 
       background: $sceneGradient;
       background-size: 100% 200%;
       box-shadow: 0 0 30px rgba(black, 0.3); //筆記：卡片陰影技巧 00 暈開30px
+      overflow: hidden;
+
       .leftTopText{
 
          margin-left: 30px;
@@ -155,6 +231,8 @@ export default {
       .house1{
          @include size(180px, 200px);
          background-color:$colorGreyLight;
+         z-index: 2;
+         box-shadow: inset -50px 0 $colorGreyNormal;
 
          .window{
             @include size(40px, 100px, 20px);
@@ -162,28 +240,37 @@ export default {
             margin-left: 70px;
             @include flex();
             flex-direction: column;
+            background-color: $colorGreyNormal;
+            box-shadow: inset 8px 5px $colorGreyDark;
             .circle{
                @include size(20px, 20px, 50%);
                margin: 4px;
                margin-left: 10px;
+               background-color: $colorWindowGrey;
             }
          }
       }
 
       .house2{
+         z-index: 3;
          @include size(240px, 170px);
          right: 130px;
+         background-color: $colorGreyLight;
+         box-shadow: inset 0 15px $colorShadowBlueLight, inset -72px 0px $colorGreyNormal;
          .door{
             @include size(40px, 80px, 20px 20px 0 0 ); //筆記：border-radius 若要指定4個角的順序，則為：左上、右上、右下、左下。
             position: absolute;
             bottom: 0;
             left: 45px;
+            background-color: $colorWindowGrey;
+            box-shadow: inset 10px 2px $colorShadowBlue;
          }
       }
 
       .house3{
          @include size(320px, 300px);
          @include flex();
+         z-index: 1;
 
          .wall{
             flex:1;
@@ -193,6 +280,7 @@ export default {
             .window{
                @include size(24px, 50px, 12px 12px 0 0);
                margin-top: 30px;
+               background-color: $colorBackground;
             }
 
             &::before{
@@ -201,22 +289,32 @@ export default {
                position: absolute;
                width: 105%;
                height: 20px;
-               background-color: pink;
+               background-color: inherit;
+               box-shadow: 0px 0px 10px rgba(#000,0.1);
                top: -20px;
                left:50%;
                transform: translate(-50%);
             }
             &:nth-child(1){ //選擇第1個wall
-               background-color: red;
+               background-color: $colorGreyLight;
                flex: 10;
+               .window{
+                  box-shadow: inset 8px 0 $colorShadowBlue;
+               }
             }
             &:nth-child(2){ //選擇第1個wall
-               background-color: rgb(225, 0, 255);
+               background-color: $colorGreyNormal;
                flex: 14;
+               .window{
+                  box-shadow: inset 0px 0 $colorShadowBlue;
+               }
             }
             &:nth-child(3){ //選擇第1個wall
-               background-color: rgb(0, 255, 21);
+               background-color: $colorGreyDark;
                flex: 10;
+               .window{
+                  box-shadow: inset -8px 0 $colorShadowBlue;
+               }
             }
          }
 
@@ -224,10 +322,12 @@ export default {
             @include halfCir(150px);
             position: absolute;
             top: -170px;
+             background: $roofGradient;
             .roofTop{
                @include halfCir(14px);
                @include abpos(50%, -14px);
                transform: translateX(-50%);
+               background-color: #fff;
             }
          }
 
@@ -237,8 +337,10 @@ export default {
             left:50%;
             transform: translateX(-50%);
             bottom: 10px;
+            background-color: #fff;
             &::before{
                content:'';
+               background-color: #fff;
                display: block;
                @include size(30px , 4px);
                position: absolute;
@@ -250,4 +352,13 @@ export default {
          }
       }
    }
+.scene{
+   transition: 2s;
+}
+input:checked+.scene{
+   background-position: 0 100%;
+   .allstars{
+      opacity: 0;
+   }
+}
 </style>
