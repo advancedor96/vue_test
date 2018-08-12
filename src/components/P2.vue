@@ -4,6 +4,8 @@
          <div class="remind">Click to Switch Day/Night</div>
          <input type="checkbox" id='switch'>
          <div class="scene">
+            <div class="sun"></div>
+            <div class="moon"></div>
             <div class="allstars">
                <div class="star1"></div>
                <div class="star2"></div>
@@ -39,7 +41,11 @@
             <div class="leftTopText">
                <div class="blueBlock"></div>
                <h5>A day <br />ON THE ISLAND</h5>
-               <h1>AEGEAN SEA<br/>NIGHT SKY</h1>
+               <h1>AEGEAN SEA<br/>
+                  <span class="nightText"> NIGHT SKY</span>
+                  <span class="dayText"> Day SKY</span>
+                 
+               </h1>
                <p>動態互動<br />網頁特效入門</p>
             </div>
 
@@ -166,29 +172,42 @@ export default {
             transform: translate(100px, 0);
          }
          100%{
-            transform: translate(0, 100px);
+            transform: translate(0, 200px);
          }
 
       }
       @for $i from 1 through 30{
          $posX : random(100)*1%;
-         $posY : random()*50%;
+         $posY : random(80)*(-1%) + 50%;
          .star#{$i}{
             left: $posX;
             top:$posY;
-            animation-delay: $i*-0.1s
+            animation-delay: $i*(-0.1s)
          }
 
       }
    }
    .scene{
       @include size(700px, 500px, 15px);
-
+      cursor: pointer;
       background: $sceneGradient;
       background-size: 100% 200%;
       box-shadow: 0 0 30px rgba(black, 0.3); //筆記：卡片陰影技巧 00 暈開30px
       overflow: hidden;
+      .moon{
+         @include size(50px, 50px, 50%);
+         @include abpos(300px, 100px);
+         // background-color: white;
 
+         box-shadow: inset 10px -10px rgba(255,255,255,0.9);
+      }
+      .sun{
+         @include size(50px, 50px, 50%);
+         @include abpos(300px, 400px);
+         background-color: yellow;
+         opacity: 0;
+         
+      }
       .leftTopText{
 
          margin-left: 30px;
@@ -213,6 +232,12 @@ export default {
          .blueBlock{
             @include size(20px, 25px);
             background-color: $colorShadowBlue;
+         }
+         .nightText{
+            display: block;
+         }
+         .dayText{
+            display: none;
          }
       }
 
@@ -271,7 +296,7 @@ export default {
          @include size(320px, 300px);
          @include flex();
          z-index: 1;
-
+         background-color: $colorGreyLight;
          .wall{
             flex:1;
             height: 100%;
@@ -352,13 +377,46 @@ export default {
          }
       }
    }
-.scene{
-   transition: 2s;
+
+
+.remind{
+  opacity: 0.2;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.scene, .moon, .sun, .building, .leftTopText>*{
+   transition: 1s;
 }
 input:checked+.scene{
    background-position: 0 100%;
    .allstars{
       opacity: 0;
    }
+   .leftTopText{
+      color: #222;
+   }
+   .blueBlock{
+      background-color: white;
+   }
+   .moon{
+      top: -100px;
+      opacity: 0;
+   }
+   .sun{
+      top: 100px;
+      opacity: 1;
+   }
+   .nightText{
+      display: none;
+   }
+   .dayText{
+      display: block;
+   }
+   .building{
+      filter: brightness(110%)
+   }
+}
+#switch{
+   display: none
 }
 </style>
