@@ -26,4 +26,10 @@ html, body, #app{
   background-color: #fff;
   margin: 0;
 }
+
+.goHome{
+  position: absolute;
+  left:0;
+  top:0;
+}
 </style>
