@@ -30,6 +30,7 @@ module.exports = {
     "no-trailing-spaces": 0,
     "key-spacing":0,
     "quotes": 0,
-    "space-before-function-paren":0
+    "space-before-function-paren":0,
+    "no-unused-vars":0
   }
 }

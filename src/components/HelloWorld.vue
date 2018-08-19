@@ -2,6 +2,7 @@
   <div class="hello">
     <router-link to="/1">Project 1</router-link>
     <router-link to="/2">Project 2</router-link>
+    <router-link to="/3">Project 3</router-link>
   </div>
 </template>
 
