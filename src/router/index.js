@@ -5,6 +5,7 @@ import Login from '@/components/Login'
 import P1 from '@/components/P1'
 import P2 from '@/components/P2'
 import P3 from '@/components/P3'
+import P4 from '@/components/P4'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +31,10 @@ export default new Router({
     {
       path: '/3',
       component:P3
+    },
+    {
+      path: '/4',
+      component:P4
     }
   ]
 })
