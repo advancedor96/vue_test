@@ -2,15 +2,17 @@
 <div class="p4_wrapper">
   <h3 class="mouseText">({{x}}, {{y}})</h3>
   <div class="mouseSymbol"></div>
-  <div class="targets">
+  <div class="mytargets" :class="{moving: isMoving}">
     <div class="t1" data-score="5" @click="hit(5)"></div>
     <div class="t2" data-score="4" @click="hit(4)"></div>
     <div class="t3" data-score="3" @click="hit(3)"></div>
     <div class="t4" data-score="2" @click="hit(2)"></div>
     <div class="t5" data-score="1" @click="hit(1)"></div>
   </div>
-  <div class="score">Score: {{ total }}</div>
-  <span>重新開始：R, 變換模式：K</span>
+  <div class="infos">
+    <div class="score">Score: {{ total }}</div>
+    <span class="hint">重新開始：R, 變換模式：K</span>
+  </div>
 </div>
 </template>
 <script>
@@ -19,7 +21,8 @@ export default {
     return {
       total: 0,
       x:0,
-      y:0
+      y:0,
+      isMoving: false
     }
   },
   methods:{
@@ -40,6 +43,11 @@ export default {
       } else if (e.key.toLowerCase() === 'k') {
         console.log('is k')
       }
+    })
+    window.addEventListener('keyup', (e) => {
+      if (e.key.toLowerCase() === 'k') {
+        this.isMoving = !this.isMoving
+      } 
     })
     window.addEventListener('mousemove', (e) => {
       this.x = e.clientX
@@ -63,57 +71,88 @@ export default {
 }
 .p4_wrapper{
   @include size(100%);  
-  .targets{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .mouseText{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    
+  }
+  .mytargets{
     position: relative;
-    @include size(300px);
+    @include size(500px);
     z-index: 0;
+
+    @keyframes moving{
+      0%{
+        transform: translate(-200px);
+      }
+      100%{
+        transform: translate(200px);
+      }
+    }
+    &.moving{
+      animation: moving 2s infinite alternate;
+    }
   }
   .t1{
-    @include size(20px);
+    @include size(100px);
     border-radius: 50%;
     @include poaCenter();
     z-index: 5;
     background-color: red;
   }
   .t2{
-    @include size(70px);
+    @include size(200px);
     border-radius: 50%;
     @include poaCenter();
     z-index: 4;
     background-color: white;
   }
   .t3{
-    @include size(120px);
+    @include size(300px);
     border-radius: 50%;
     @include poaCenter();
     z-index: 3;
     background-color: red;
   }
   .t4{
-    @include size(170px);
+    @include size(400px);
     border-radius: 50%;
     @include poaCenter();
     z-index: 2;
     background-color:white;
   }
   .t5{
-    @include size(220px);
+    @include size(500px);
     border-radius: 50%;
     @include poaCenter();
     z-index: 1;
     background-color:red;
+    border: 20px solid white;
+    box-shadow: 0 0 30px rgba(black, 0.4);
   }
   [class^='t']{
+    transition: 0.3s;
     &:active{
-      background-color: #fff;
+      background-color: rgba(black, 0.5);
       // filter: brightness(50%);
+      transition: 0s;
     }
     &:before{
       content: attr(data-score);
-      position: absolute;
-      left: 50%;
-      top:3px;
+      // position: absolute;
+      @include poaCenter();
+      // left: 50%;
+      top:15px;
     }
+  }
+  .infos{
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
   }
   .score{
     font-size: 30px;
