@@ -2,7 +2,8 @@
 <div class="p4_wrapper">
   <h3 class="mouseText">({{x}}, {{y}})</h3>
   <div class="mouseSymbol" :style="{left: x + 'px', top: y + 'px'}"></div>
-  <div class="mytargets" :class="{moving: isMoving}">
+  <div class="mytargets" :class="{moving: isMoving}" @click="shot">
+    <span class="spot" v-for="(spot, i) in spots" :key="i" :style="{left: spot.left + 'px', top: spot.top + 'px'}"></span>
     <div class="t1" data-score="5" @click="hit(5)"></div>
     <div class="t2" data-score="4" @click="hit(4)"></div>
     <div class="t3" data-score="3" @click="hit(3)"></div>
@@ -13,7 +14,7 @@
     <div class="score">Score: {{ total }}</div>
     <span class="hint">重新開始：R, 變換模式：K</span>
   </div>
-  <span class="spot" v-for="(spot, i) in spots" :key="i" :style="{left: spot.left + 'px', top: spot.top + 'px'}"></span>
+  
 </div>
 </template>
 <script>
@@ -32,10 +33,15 @@ export default {
       this.total += score
     },
     handleKeyup(e) {
-      console.log('e:', e)
     },
     resetGame() {
       this.total = 0
+    },
+    shot(e) {
+      this.spots.push({
+        left: e.offsetX,
+        top: e.offsetY
+      })
     }
   },
   mounted() {
@@ -54,12 +60,6 @@ export default {
     window.addEventListener('mousemove', (e) => {
       this.x = e.clientX
       this.y = e.clientY
-    })
-    window.addEventListener('click', (e) => {
-      this.spots.push({
-        left: e.clientX,
-        top: e.clientY
-      })
     })
   }
 }
@@ -83,11 +83,12 @@ export default {
   align-items: center;
   justify-content: center;
   .spot{
-    position: fixed;
+    position: absolute;
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background-color: rgba(black, 0.3);
+    z-index: 6;
   }
   .mouseText{
     position: absolute;
