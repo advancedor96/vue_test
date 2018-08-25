@@ -1,7 +1,7 @@
 <template>
 <div class="p4_wrapper">
   <h3 class="mouseText">({{x}}, {{y}})</h3>
-  <div class="mouseSymbol"></div>
+  <div class="mouseSymbol" :style="{left: x + 'px', top: y + 'px'}"></div>
   <div class="mytargets" :class="{moving: isMoving}">
     <div class="t1" data-score="5" @click="hit(5)"></div>
     <div class="t2" data-score="4" @click="hit(4)"></div>
@@ -13,6 +13,7 @@
     <div class="score">Score: {{ total }}</div>
     <span class="hint">重新開始：R, 變換模式：K</span>
   </div>
+  <span class="spot" v-for="(spot, i) in spots" :key="i" :style="{left: spot.left + 'px', top: spot.top + 'px'}"></span>
 </div>
 </template>
 <script>
@@ -22,7 +23,8 @@ export default {
       total: 0,
       x:0,
       y:0,
-      isMoving: false
+      isMoving: false,
+      spots:[]
     }
   },
   methods:{
@@ -53,6 +55,12 @@ export default {
       this.x = e.clientX
       this.y = e.clientY
     })
+    window.addEventListener('click', (e) => {
+      this.spots.push({
+        left: e.clientX,
+        top: e.clientY
+      })
+    })
   }
 }
 </script>
@@ -74,11 +82,17 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  .spot{
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(black, 0.3);
+  }
   .mouseText{
     position: absolute;
     top: 20px;
     left: 20px;
-    
   }
   .mytargets{
     position: relative;
@@ -159,16 +173,23 @@ export default {
     font-weight: 500;
   }
   .mouseSymbol{
-    width: 30px;
-    height: 3px;
+    position: fixed;
+    width: 40px;
+    height: 4px;
     background-color: black;
-    &:before{
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: none;
+
+    &:after{
       content:'';
-      width: 30px;
-      height: 3px;
+      position: absolute;
+      width: 40px;
+      height: 4px;
       display: inline-block;
       background-color: black;
-      transform: rotate(90deg) translateX(-13px);
+      z-index: 1;
+      transform: rotate(90deg);
       
     }
   }
