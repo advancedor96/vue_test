@@ -1,6 +1,6 @@
 <template>
 <div class="p4_wrapper">
-  <h3 class="mouseText">({{x}}, {{y}})</h3>
+  <h3 class="mouseText">({{x}}, {{y}}) =>( {{fx}}, {{fy}})</h3>
   <div class="mouseSymbol" :style="{left: x + 'px', top: y + 'px'}"></div>
   <div class="mytargets" :class="{moving: isMoving}" @click="shot">
     <span class="spot" v-for="(spot, i) in spots" :key="i" :style="{left: spot.left + 'px', top: spot.top + 'px'}"></span>
@@ -25,7 +25,9 @@ export default {
       x:0,
       y:0,
       isMoving: false,
-      spots:[]
+      spots:[],
+      fx:0,
+      fy:0
     }
   },
   methods:{
@@ -39,8 +41,8 @@ export default {
     },
     shot(e) {
       this.spots.push({
-        left: e.offsetX,
-        top: e.offsetY
+        left: e.pageX - e.offsetX,
+        top: e.pageY - e.offsetY
       })
     }
   },
@@ -60,6 +62,8 @@ export default {
     window.addEventListener('mousemove', (e) => {
       this.x = e.clientX
       this.y = e.clientY
+      this.fx = e.offsetX
+      this.fy = e.offsetY
     })
   }
 }
@@ -97,7 +101,11 @@ export default {
   }
   .mytargets{
     position: relative;
-    @include size(500px);
+    // position: absolute;
+    // left: 50%;
+    // top: 50%;
+    // transform: translate(-50%, -50%);
+    // @include size(500px);
     z-index: 0;
 
     @keyframes moving{
